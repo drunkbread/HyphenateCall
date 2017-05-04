@@ -1,0 +1,6 @@
+target 'Hyphenate_Call' do
+
+pod 'Hyphenate'
+pod 'Masonry'
+
+end

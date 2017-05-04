@@ -1,0 +1,6 @@
+.DS_Store
+*.xcscheme
+Hyphenate_Call/Pods
+Hyphenate_Call/Podfile.lock
+Hyphenate_Call/Hyphenate_Call.xcworkspace
+
