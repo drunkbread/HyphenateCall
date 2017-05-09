@@ -1,0 +1,8 @@
+target 'HyphenateCall_Swift' do
+use_frameworks!
+pod 'Hyphenate'
+pod 'Masonry'
+
+end
+
+
