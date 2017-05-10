@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import UserNotifications
 class FZHelper: NSObject {
 
     static let helper = FZHelper()
@@ -99,7 +99,7 @@ class FZHelper: NSObject {
     }
 }
 
-extension FZHelper: EMCallManagerDelegate , EMClientDelegate {
+extension FZHelper: EMCallManagerDelegate , EMClientDelegate, EMCallBuilderDelegate {
     
     func setupHelper() {
         
@@ -113,6 +113,8 @@ extension FZHelper: EMCallManagerDelegate , EMClientDelegate {
         let options = EMClient.shared().callManager.getCallOptions!()
         options?.videoResolution = EMCallVideoResolution640_480
         options?.isFixedVideoResolution = true
+        options?.isSendPushIfOffline = true
+        options?.offlineMessageText = "您有新的通话请求"
         EMClient.shared().callManager.setCallOptions!(options)
     }
     
@@ -129,6 +131,8 @@ extension FZHelper: EMCallManagerDelegate , EMClientDelegate {
     }
     
     func callDidReceive(_ aSession: EMCallSession!) {
+        
+        showCallLocalNotification()
         if aSession == nil || aSession.callId.isEmpty {
             return
         }
@@ -138,6 +142,7 @@ extension FZHelper: EMCallManagerDelegate , EMClientDelegate {
         }
         objc_sync_enter(object)
         startCallTimer()
+        self.currentSession = aSession
         self.callController = FZCallController.init(callSession: self.currentSession)
         self.callController?.modalPresentationStyle = .overFullScreen
         DispatchQueue.main.async {
@@ -172,7 +177,6 @@ extension FZHelper: EMCallManagerDelegate , EMClientDelegate {
                 case EMCallEndReasonRemoteOffline:
                     str = "Remote Offline"
                 default: break
-                    
                 }
                 if aError != nil {
                     UIAlertView.showInfo(title: "Error", info: aError.description)
@@ -183,5 +187,38 @@ extension FZHelper: EMCallManagerDelegate , EMClientDelegate {
         }
     }
     
+    func callRemoteOffline(_ aRemoteName: String!) {
+        let text = EMClient.shared().callManager.getCallOptions!().offlineMessageText
+        let textBody = EMTextMessageBody.init(text: text)
+        let msg = EMMessage.init(conversationID: aRemoteName, from: EMClient.shared().currentUsername, to: aRemoteName, body: textBody, ext: ["em_apns_ext":["em_push_title":text]])
+        msg?.chatType = EMChatTypeChat
+        EMClient.shared().chatManager.send(msg, progress: nil, completion: nil)
+    }
+    
+    // MARK: - 本地通知
+    func showCallLocalNotification() {
+        let application = UIApplication.shared
+        guard application.applicationState == .background else {
+            return
+        }
+        if #available(iOS 10, *) {
+            let content = UNMutableNotificationContent()
+            content.body = "您有新的通话请求"
+            content.badge = 1
+            content.sound = UNNotificationSound.default()
+            let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 0.5, repeats: false)
+            let identifier = String(Date().timeIntervalSince1970)
+            let request = UNNotificationRequest.init(identifier: identifier, content: content, trigger: trigger)
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        } else {
+            let notification = UILocalNotification()
+            notification.fireDate = Date()
+            notification.alertBody = "您有新的通话请求"
+            notification.alertAction = "Open"
+            notification.timeZone = NSTimeZone.default
+            notification.soundName = UILocalNotificationDefaultSoundName
+            application.scheduleLocalNotification(notification)
+        }
+    }
     
 }

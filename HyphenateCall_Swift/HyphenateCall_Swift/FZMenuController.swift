@@ -40,7 +40,6 @@ class FZMenuController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        FZHelper.helper.menuVC = self
     }
     
     func buttonAction(_ button: UIButton) {

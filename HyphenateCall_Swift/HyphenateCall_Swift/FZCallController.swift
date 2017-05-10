@@ -137,6 +137,7 @@ extension FZCallController {
             }
         } else if callSession.type == EMCallTypeVideo {
             actionView.speakerOutButton.isHidden = true
+            actionView.switchCameraButton.isHidden = false
             if callSession.isCaller {
                 actionView.answerButton.isHidden = true
                 actionView.remakeRejectButtonConstraints()
