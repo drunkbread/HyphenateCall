@@ -12,7 +12,6 @@
 		D25C5E081EBB2B4500F1F599 /* FZCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25C5E071EBB2B4500F1F599 /* FZCallController.swift */; };
 		D25C5E0A1EBB2D4800F1F599 /* FZTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25C5E091EBB2D4800F1F599 /* FZTopView.swift */; };
 		D26327341EBB0BD4002C697F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26327331EBB0BD4002C697F /* AppDelegate.swift */; };
-		D26327361EBB0BD4002C697F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26327351EBB0BD4002C697F /* ViewController.swift */; };
 		D26327391EBB0BD4002C697F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D26327371EBB0BD4002C697F /* Main.storyboard */; };
 		D263273B1EBB0BD4002C697F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D263273A1EBB0BD4002C697F /* Assets.xcassets */; };
 		D263273E1EBB0BD4002C697F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D263273C1EBB0BD4002C697F /* LaunchScreen.storyboard */; };
@@ -21,6 +20,16 @@
 		D26327631EBB0E6B002C697F /* FZMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26327621EBB0E6B002C697F /* FZMenuController.swift */; };
 		D26327651EBB246E002C697F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26327641EBB246E002C697F /* Extensions.swift */; };
 		D28463911EC16873002F301B /* BackendConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D28463901EC16873002F301B /* BackendConfiguration.swift */; };
+		D2BBD20B1EC2D6E8004935FE /* FZInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2BBD20A1EC2D6E8004935FE /* FZInfo.swift */; };
+		D2BBD2531EC32591004935FE /* libffmpeg-ios-full.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2BBD2511EC32591004935FE /* libffmpeg-ios-full.a */; };
+		D2BBD2541EC32591004935FE /* libHyphenateVideoRecorderPlugin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2BBD2521EC32591004935FE /* libHyphenateVideoRecorderPlugin.a */; };
+		D2BBD2561EC326E0004935FE /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D2BBD2551EC326E0004935FE /* libiconv.tbd */; };
+		D2BBD2581EC32700004935FE /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D2BBD2571EC32700004935FE /* libz.tbd */; };
+		D2BBD25A1EC32715004935FE /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D2BBD2591EC32715004935FE /* libstdc++.6.0.9.tbd */; };
+		D2BBD25C1EC32725004935FE /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D2BBD25B1EC32725004935FE /* libstdc++.tbd */; };
+		D2BBD25E1EC32739004935FE /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D2BBD25D1EC32739004935FE /* libresolv.tbd */; };
+		D2BBD2601EC327AA004935FE /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2BBD25F1EC327AA004935FE /* CoreImage.framework */; };
+		D2BBD2621EC327C1004935FE /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D2BBD2611EC327C1004935FE /* libbz2.tbd */; };
 		D2E06C351EBC6E1E007CF71D /* FZActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E06C341EBC6E1E007CF71D /* FZActionView.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,7 +57,6 @@
 		D25C5E091EBB2D4800F1F599 /* FZTopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FZTopView.swift; sourceTree = "<group>"; };
 		D26327301EBB0BD4002C697F /* HyphenateCall_Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HyphenateCall_Swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D26327331EBB0BD4002C697F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D26327351EBB0BD4002C697F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D26327381EBB0BD4002C697F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D263273A1EBB0BD4002C697F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D263273D1EBB0BD4002C697F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -63,6 +71,17 @@
 		D26327621EBB0E6B002C697F /* FZMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FZMenuController.swift; sourceTree = "<group>"; };
 		D26327641EBB246E002C697F /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D28463901EC16873002F301B /* BackendConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendConfiguration.swift; sourceTree = "<group>"; };
+		D2BBD20A1EC2D6E8004935FE /* FZInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FZInfo.swift; sourceTree = "<group>"; };
+		D2BBD2501EC32591004935FE /* EMVideoRecorderPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMVideoRecorderPlugin.h; sourceTree = "<group>"; };
+		D2BBD2511EC32591004935FE /* libffmpeg-ios-full.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libffmpeg-ios-full.a"; sourceTree = "<group>"; };
+		D2BBD2521EC32591004935FE /* libHyphenateVideoRecorderPlugin.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHyphenateVideoRecorderPlugin.a; sourceTree = "<group>"; };
+		D2BBD2551EC326E0004935FE /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		D2BBD2571EC32700004935FE /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		D2BBD2591EC32715004935FE /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
+		D2BBD25B1EC32725004935FE /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
+		D2BBD25D1EC32739004935FE /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		D2BBD25F1EC327AA004935FE /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		D2BBD2611EC327C1004935FE /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		D2E06C341EBC6E1E007CF71D /* FZActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FZActionView.swift; sourceTree = "<group>"; };
 		EB1B44D68E4D8EF55910A0ED /* Pods-HyphenateCall_Swift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HyphenateCall_Swift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HyphenateCall_Swift/Pods-HyphenateCall_Swift.debug.xcconfig"; sourceTree = "<group>"; };
 		EC2B6A90D7EA71AC8A6875CF /* Pods-HyphenateCall_Swift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HyphenateCall_Swift.release.xcconfig"; path = "Pods/Target Support Files/Pods-HyphenateCall_Swift/Pods-HyphenateCall_Swift.release.xcconfig"; sourceTree = "<group>"; };
@@ -73,7 +92,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2BBD2621EC327C1004935FE /* libbz2.tbd in Frameworks */,
+				D2BBD2601EC327AA004935FE /* CoreImage.framework in Frameworks */,
+				D2BBD25E1EC32739004935FE /* libresolv.tbd in Frameworks */,
+				D2BBD25C1EC32725004935FE /* libstdc++.tbd in Frameworks */,
+				D2BBD25A1EC32715004935FE /* libstdc++.6.0.9.tbd in Frameworks */,
+				D2BBD2581EC32700004935FE /* libz.tbd in Frameworks */,
+				D2BBD2561EC326E0004935FE /* libiconv.tbd in Frameworks */,
 				55FF4D2B3BB2F7B5ED3411B5 /* Pods_HyphenateCall_Swift.framework in Frameworks */,
+				D2BBD2541EC32591004935FE /* libHyphenateVideoRecorderPlugin.a in Frameworks */,
+				D2BBD2531EC32591004935FE /* libffmpeg-ios-full.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +134,13 @@
 		C946F884ED78BD7C3A1B7EFE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D2BBD2611EC327C1004935FE /* libbz2.tbd */,
+				D2BBD25F1EC327AA004935FE /* CoreImage.framework */,
+				D2BBD25D1EC32739004935FE /* libresolv.tbd */,
+				D2BBD25B1EC32725004935FE /* libstdc++.tbd */,
+				D2BBD2591EC32715004935FE /* libstdc++.6.0.9.tbd */,
+				D2BBD2571EC32700004935FE /* libz.tbd */,
+				D2BBD2551EC326E0004935FE /* libiconv.tbd */,
 				4F884B01981F1A8525941728 /* Pods_HyphenateCall_Swift.framework */,
 			);
 			name = Frameworks;
@@ -139,7 +174,6 @@
 				D284638F1EC1681A002F301B /* Network */,
 				D284638B1EC167EF002F301B /* Call */,
 				D26327331EBB0BD4002C697F /* AppDelegate.swift */,
-				D26327351EBB0BD4002C697F /* ViewController.swift */,
 				D26327641EBB246E002C697F /* Extensions.swift */,
 				D26327371EBB0BD4002C697F /* Main.storyboard */,
 				D263273A1EBB0BD4002C697F /* Assets.xcassets */,
@@ -171,6 +205,8 @@
 		D284638B1EC167EF002F301B /* Call */ = {
 			isa = PBXGroup;
 			children = (
+				D2BBD24F1EC32591004935FE /* plugin */,
+				D2BBD20A1EC2D6E8004935FE /* FZInfo.swift */,
 				D26327621EBB0E6B002C697F /* FZMenuController.swift */,
 				D25C5E071EBB2B4500F1F599 /* FZCallController.swift */,
 				D25C5E091EBB2D4800F1F599 /* FZTopView.swift */,
@@ -186,6 +222,16 @@
 				D28463901EC16873002F301B /* BackendConfiguration.swift */,
 			);
 			name = Network;
+			sourceTree = "<group>";
+		};
+		D2BBD24F1EC32591004935FE /* plugin */ = {
+			isa = PBXGroup;
+			children = (
+				D2BBD2501EC32591004935FE /* EMVideoRecorderPlugin.h */,
+				D2BBD2511EC32591004935FE /* libffmpeg-ios-full.a */,
+				D2BBD2521EC32591004935FE /* libHyphenateVideoRecorderPlugin.a */,
+			);
+			path = plugin;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -377,8 +423,8 @@
 				D26327631EBB0E6B002C697F /* FZMenuController.swift in Sources */,
 				D28463911EC16873002F301B /* BackendConfiguration.swift in Sources */,
 				D25C5E081EBB2B4500F1F599 /* FZCallController.swift in Sources */,
+				D2BBD20B1EC2D6E8004935FE /* FZInfo.swift in Sources */,
 				D25C5E061EBB28A600F1F599 /* FZHelper.swift in Sources */,
-				D26327361EBB0BD4002C697F /* ViewController.swift in Sources */,
 				D26327341EBB0BD4002C697F /* AppDelegate.swift in Sources */,
 				D26327651EBB246E002C697F /* Extensions.swift in Sources */,
 				D2E06C351EBC6E1E007CF71D /* FZActionView.swift in Sources */,
@@ -536,9 +582,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = W3Y8E56A5H;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = HyphenateCall_Swift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/HyphenateCall_Swift/plugin",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "FZ.HyphenateCall-Swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/HyphenateCall_Swift/CallSwiftHeader.h";
@@ -552,9 +603,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = W3Y8E56A5H;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = HyphenateCall_Swift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/HyphenateCall_Swift/plugin",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "FZ.HyphenateCall-Swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/HyphenateCall_Swift/CallSwiftHeader.h";

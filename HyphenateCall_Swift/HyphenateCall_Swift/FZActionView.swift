@@ -15,6 +15,7 @@ import UIKit
     @objc optional func actionViewMute(_ view: FZActionView, _ button: UIButton)
     @objc optional func actionViewRejectCall(_ view: FZActionView, _ button: UIButton)
     @objc optional func actionViewAnswerCall(_ view: FZActionView, _ button: UIButton)
+    @objc optional func actionViewRecordAction(_ view: FZActionView, _ button: UIButton)
 }
 
 class FZActionView: UIView {
@@ -43,6 +44,13 @@ class FZActionView: UIView {
         return button
     }()
     
+    lazy var recordButton: UIButton = {
+        let button = UIButton.createButton(title: "录制", tag: 1007, fontSize: 11, width: 40, target: self, selector: #selector(FZActionView.recordAction(_:)))
+        button.backgroundColor = UIColor.cyan
+        return button
+    }()
+
+    
     lazy var muteButton: UIButton = {
         let button = UIButton.buttonFromImage(image: "Button_Mute", selectedImage: "Button_Mute active", aTarget: self, action: #selector(muteAction(_:)))
         return button
@@ -61,6 +69,7 @@ class FZActionView: UIView {
     private func layoutUI() {
         self.addSubview(speakerOutButton)
         self.addSubview(switchCameraButton)
+        self.addSubview(recordButton)
         self.addSubview(muteButton)
         self.addSubview(rejectButton)
         self.addSubview(answerButton)
@@ -71,6 +80,11 @@ class FZActionView: UIView {
         }
         switchCameraButton.mas_makeConstraints { (make) in
             _ = make?.left.equalTo()(self.mas_left)?.offset()(100)
+            _ = make?.top.equalTo()(self.mas_top)?.offset()(20)
+            _ = make?.width.height().equalTo()(40)
+        }
+        recordButton.mas_makeConstraints { (make) in
+            _ = make?.left.equalTo()(self.mas_left)?.offset()(40)
             _ = make?.top.equalTo()(self.mas_top)?.offset()(20)
             _ = make?.width.height().equalTo()(40)
         }
@@ -118,5 +132,9 @@ class FZActionView: UIView {
     
     @objc private func answerAction(_ sender: UIButton) {
         delegate?.actionViewAnswerCall?(self, sender)
+    }
+    
+    @objc func recordAction(_ sender: UIButton) {
+        delegate?.actionViewRecordAction?(self, sender)
     }
 }

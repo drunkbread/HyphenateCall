@@ -35,9 +35,14 @@ class FZCallController: UIViewController, FZActionViewDelegate {
     init?(callSession: EMCallSession?) {
         if let call = callSession {
             self.callSession = call
+//            if call.type == EMCallTypeVideo {
+//                try! AVAudioSession.sharedInstance().overrideOutputAudioPort(.speaker)
+//                try! AVAudioSession.sharedInstance().setActive(false)
+//            }
         } else {
             return nil
         }
+        
         super.init(nibName: nil, bundle: nil)
     }
     required init?(coder aDecoder: NSCoder) {
@@ -80,14 +85,32 @@ class FZCallController: UIViewController, FZActionViewDelegate {
     func actionViewSpeakerout(_ view: FZActionView, _ button: UIButton) {
         
         print("actionViewSpeakerout\(button)")
+        let audioSession = AVAudioSession.sharedInstance()
+        if button.isSelected {
+            try! audioSession.overrideOutputAudioPort(.none)
+        } else {
+            try! audioSession.overrideOutputAudioPort(.speaker)
+        }
+        try! audioSession.setActive(true)
+        button.isSelected = !button.isSelected
     }
     
     func actionViewSwitchCamera(_ view: FZActionView, _ button: UIButton) {
         
+        print("Debug__切换摄像头")
+        self.callSession?.switchCameraPosition(self.actionView.switchCameraButton.isSelected)
+        self.actionView.switchCameraButton.isSelected = !self.actionView.switchCameraButton.isSelected
+        
     }
     
     func actionViewMute(_ view: FZActionView, _ button: UIButton) {
-        
+        print("Debug__静音")
+        button.isSelected = !button.isSelected
+        if button.isSelected {
+            _ = callSession?.pauseVoice()
+        } else {
+            _ = callSession?.resumeVoice()
+        }
     }
     
     func actionViewRejectCall(_ view: FZActionView, _ button: UIButton) {
@@ -101,6 +124,39 @@ class FZCallController: UIViewController, FZActionViewDelegate {
     
     func actionViewAnswerCall(_ view: FZActionView, _ button: UIButton) {
         FZHelper.helper.answerCall((self.callSession!.callId)!)
+    }
+    
+    func actionViewRecordAction(_ view: FZActionView, _ button: UIButton) {
+        button.isSelected = !button.isSelected
+        if button.isSelected {
+            var recordPath = NSHomeDirectory()
+            recordPath = "\(recordPath)/Library/appdata/chatbuffer"
+            let fm = FileManager.default
+            if !fm.fileExists(atPath: recordPath) {
+                try! fm.createDirectory(atPath: recordPath, withIntermediateDirectories: true, attributes: nil)
+            }
+            var error: EMError?
+            EMVideoRecorderPlugin.sharedInstance().startVideoRecording(toFilePath: recordPath, error: &error)
+            if error == nil {
+                print("Debug__录制视频开始，路径：\(recordPath)")
+                button.setTitle("结束录制", for: .selected)
+            } else {
+                print("Debug__录制视频开始失败，error:\(error!.code)")
+                UIAlertView.showInfo(title: "无法开始录制", info: "\(error?.description)")
+                button.isSelected = false
+            }
+        } else {
+            var aError: EMError?
+            let path = EMVideoRecorderPlugin.sharedInstance().stopVideoRecording(&aError)
+            if aError == nil {
+                print("Debug__录制视频结束，路径：\(path!)")
+                button.setTitle("录制", for: .normal)
+            } else {
+                print("Debug__录制视频结束失败，error:\(aError!.code)")
+                UIAlertView.showInfo(title: "无法结束录制", info: "\(aError?.description)")
+                button.isSelected = true
+            }
+        }
     }
 
 }

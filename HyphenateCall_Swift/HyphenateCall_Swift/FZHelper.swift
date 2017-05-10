@@ -102,7 +102,8 @@ class FZHelper: NSObject {
 extension FZHelper: EMCallManagerDelegate , EMClientDelegate, EMCallBuilderDelegate {
     
     func setupHelper() {
-        
+        // 初始化视频录制工具类，必须在通话前调用
+        EMVideoRecorderPlugin.initGlobalConfig()
         EMClient.shared().removeDelegate(self)
         EMClient.shared().callManager.remove!(self)
         EMClient.shared().callManager.add!(self, delegateQueue: nil)
@@ -110,6 +111,7 @@ extension FZHelper: EMCallManagerDelegate , EMClientDelegate, EMCallBuilderDeleg
         initlizeCallOption()
     }
     private func initlizeCallOption() {
+        
         let options = EMClient.shared().callManager.getCallOptions!()
         options?.videoResolution = EMCallVideoResolution640_480
         options?.isFixedVideoResolution = true

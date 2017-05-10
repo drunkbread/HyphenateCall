@@ -14,3 +14,4 @@
 
 #import <Hyphenate/Hyphenate.h>
 #import <Masonry/Masonry.h>
+#import "EMVideoRecorderPlugin.h"
