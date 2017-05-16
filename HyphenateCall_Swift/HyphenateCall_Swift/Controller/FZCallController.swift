@@ -15,7 +15,7 @@ class FZCallController: UIViewController {
     var callSession: EMCallSession?
     var timer: Timer?
     var timeLength: Int = 0
-    let tap = UITapGestureRecognizer.init(target: self, action: #selector(tapAction(_:)))
+    var isFloating = false
     
     lazy var topView: FZTopView = {
         let topView = FZTopView()
@@ -57,10 +57,21 @@ class FZCallController: UIViewController {
         view.addSubview(actionView)
         layoutUI()
         initializeCallUI()
+        let tap = UITapGestureRecognizer.init(target: self, action: #selector(tapAction(_:)))
+        tap.numberOfTapsRequired = 1
         view.addGestureRecognizer(tap)
+
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
     }
     // For floatingWindow
     func tapAction(_ tap: UITapGestureRecognizer) {
+        
+        guard isFloating else {
+            return
+        }
         if self.actionView.floatingWindowButton.isSelected {
             self.view.frame = UIScreen.main.bounds
             self.callSession!.localVideoView.isHidden = false
@@ -68,6 +79,8 @@ class FZCallController: UIViewController {
             self.topView.isHidden = false
             self.actionView.floatingWindowButton.isSelected = false
             self.callSession!.remoteVideoView.frame = self.view.frame
+            self.view.sendSubview(toBack: self.callSession!.remoteVideoView)
+            isFloating = false
         }
     }
     // MARK: - Action
@@ -167,12 +180,11 @@ extension FZCallController {
         session.remoteVideoView.scaleMode = EMCallViewScaleModeAspectFill
         view.addSubview(session.remoteVideoView)
         view.sendSubview(toBack: session.remoteVideoView)
-        
+        session.remoteVideoView.isUserInteractionEnabled = true
         session.remoteVideoView.mas_makeConstraints { (make) in
             _ = make?.top.left().bottom().right().equalTo()(self.view)
-            // For floatingWindow
-//            session.remoteVideoView.addGestureRecognizer(self.tap)
         }
+
     }
     
     @objc func timeAction()  {
@@ -281,10 +293,12 @@ extension FZCallController: FZActionViewDelegate {
         button.isSelected = !button.isSelected
         if button.isSelected {
             self.view.frame = CGRect.init(x: self.view.frame.size.width - 100, y: 44, width: 80, height: self.view.frame.size.height * 80 / self.view.frame.size.width)
-            self.view.bringSubview(toFront: callSession.remoteVideoView)
+
             callSession.localVideoView.isHidden = true
             self.actionView.isHidden = true
             self.topView.isHidden = true
+            self.view.bringSubview(toFront: callSession.remoteVideoView)
+            isFloating = true
         }
     }
 }

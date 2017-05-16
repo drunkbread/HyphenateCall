@@ -137,8 +137,9 @@ extension FZHelper: EMCallManagerDelegate , EMClientDelegate, EMCallBuilderDeleg
     
     func callDidAccept(_ aSession: EMCallSession!) {
         if aSession.callId == self.currentSession?.callId {
+            stopCallTimer()
             self.callController?.changeToAcceptedState()
-//            stopCallTimer()
+
         }
     }
     
