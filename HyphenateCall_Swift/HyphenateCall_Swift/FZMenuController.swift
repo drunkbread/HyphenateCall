@@ -80,3 +80,8 @@ class FZMenuController: UIViewController {
     }
 
 }
+
+extension FZMenuController {
+
+    
+}

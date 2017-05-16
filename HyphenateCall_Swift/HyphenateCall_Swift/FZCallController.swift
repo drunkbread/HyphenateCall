@@ -9,13 +9,13 @@
 import UIKit
 import AVFoundation
 
-class FZCallController: UIViewController, FZActionViewDelegate {
+class FZCallController: UIViewController {
 
     
     var callSession: EMCallSession?
     var timer: Timer?
     var timeLength: Int = 0
-
+    let tap = UITapGestureRecognizer.init(target: self, action: #selector(tapAction(_:)))
     
     lazy var topView: FZTopView = {
         let topView = FZTopView()
@@ -35,10 +35,10 @@ class FZCallController: UIViewController, FZActionViewDelegate {
     init?(callSession: EMCallSession?) {
         if let call = callSession {
             self.callSession = call
-//            if call.type == EMCallTypeVideo {
-//                try! AVAudioSession.sharedInstance().overrideOutputAudioPort(.speaker)
-//                try! AVAudioSession.sharedInstance().setActive(false)
-//            }
+            if call.type == EMCallTypeVideo {
+                try? AVAudioSession.sharedInstance().overrideOutputAudioPort(.speaker)
+                try? AVAudioSession.sharedInstance().setActive(false)
+            }
         } else {
             return nil
         }
@@ -57,8 +57,19 @@ class FZCallController: UIViewController, FZActionViewDelegate {
         view.addSubview(actionView)
         layoutUI()
         initializeCallUI()
+        view.addGestureRecognizer(tap)
     }
-    
+    // For floatingWindow
+    func tapAction(_ tap: UITapGestureRecognizer) {
+        if self.actionView.floatingWindowButton.isSelected {
+            self.view.frame = UIScreen.main.bounds
+            self.callSession!.localVideoView.isHidden = false
+            self.actionView.isHidden = false
+            self.topView.isHidden = false
+            self.actionView.floatingWindowButton.isSelected = false
+            self.callSession!.remoteVideoView.frame = self.view.frame
+        }
+    }
     // MARK: - Action
     
     func startCallTimer() {
@@ -79,85 +90,6 @@ class FZCallController: UIViewController, FZActionViewDelegate {
         stopTimer()
     }
 
-    
-    // MARK: - FZActionViewDelegate
-    
-    func actionViewSpeakerout(_ view: FZActionView, _ button: UIButton) {
-        
-        print("actionViewSpeakerout\(button)")
-        let audioSession = AVAudioSession.sharedInstance()
-        if button.isSelected {
-            try! audioSession.overrideOutputAudioPort(.none)
-        } else {
-            try! audioSession.overrideOutputAudioPort(.speaker)
-        }
-        try! audioSession.setActive(true)
-        button.isSelected = !button.isSelected
-    }
-    
-    func actionViewSwitchCamera(_ view: FZActionView, _ button: UIButton) {
-        
-        print("Debug__切换摄像头")
-        self.callSession?.switchCameraPosition(self.actionView.switchCameraButton.isSelected)
-        self.actionView.switchCameraButton.isSelected = !self.actionView.switchCameraButton.isSelected
-        
-    }
-    
-    func actionViewMute(_ view: FZActionView, _ button: UIButton) {
-        print("Debug__静音")
-        button.isSelected = !button.isSelected
-        if button.isSelected {
-            _ = callSession?.pauseVoice()
-        } else {
-            _ = callSession?.resumeVoice()
-        }
-    }
-    
-    func actionViewRejectCall(_ view: FZActionView, _ button: UIButton) {
-        stopTimer()
-        if (self.callSession?.isCaller)! {
-            FZHelper.helper.hangup(EMCallEndReasonNoResponse)
-        } else {
-        FZHelper.helper.hangup(EMCallEndReasonDecline)
-        }
-    }
-    
-    func actionViewAnswerCall(_ view: FZActionView, _ button: UIButton) {
-        FZHelper.helper.answerCall((self.callSession!.callId)!)
-    }
-    
-    func actionViewRecordAction(_ view: FZActionView, _ button: UIButton) {
-        button.isSelected = !button.isSelected
-        if button.isSelected {
-            var recordPath = NSHomeDirectory()
-            recordPath = "\(recordPath)/Library/appdata/chatbuffer"
-            let fm = FileManager.default
-            if !fm.fileExists(atPath: recordPath) {
-                try! fm.createDirectory(atPath: recordPath, withIntermediateDirectories: true, attributes: nil)
-            }
-            var error: EMError?
-            EMVideoRecorderPlugin.sharedInstance().startVideoRecording(toFilePath: recordPath, error: &error)
-            if error == nil {
-                print("Debug__录制视频开始，路径：\(recordPath)")
-                button.setTitle("结束录制", for: .selected)
-            } else {
-                print("Debug__录制视频开始失败，error:\(error!.code)")
-                UIAlertView.showInfo(title: "无法开始录制", info: "\(error?.description)")
-                button.isSelected = false
-            }
-        } else {
-            var aError: EMError?
-            let path = EMVideoRecorderPlugin.sharedInstance().stopVideoRecording(&aError)
-            if aError == nil {
-                print("Debug__录制视频结束，路径：\(path!)")
-                button.setTitle("录制", for: .normal)
-            } else {
-                print("Debug__录制视频结束失败，error:\(aError!.code)")
-                UIAlertView.showInfo(title: "无法结束录制", info: "\(aError?.description)")
-                button.isSelected = true
-            }
-        }
-    }
 
 }
 // MARK: - 通话页面的UI处理
@@ -225,7 +157,6 @@ extension FZCallController {
     
     func setupRemoteVideoView() {
         
-        
         guard let session = self.callSession else {
             return
         }
@@ -236,8 +167,11 @@ extension FZCallController {
         session.remoteVideoView.scaleMode = EMCallViewScaleModeAspectFill
         view.addSubview(session.remoteVideoView)
         view.sendSubview(toBack: session.remoteVideoView)
+        
         session.remoteVideoView.mas_makeConstraints { (make) in
             _ = make?.top.left().bottom().right().equalTo()(self.view)
+            // For floatingWindow
+//            session.remoteVideoView.addGestureRecognizer(self.tap)
         }
     }
     
@@ -256,13 +190,110 @@ extension FZCallController {
     }
 
 }
+// MARK: - 音视频功能
+extension FZCallController: FZActionViewDelegate {
+    
+    
+    func actionViewSpeakerout(_ view: FZActionView, _ button: UIButton) {
+        
+        print("actionViewSpeakerout\(button)")
+        let audioSession = AVAudioSession.sharedInstance()
+        if button.isSelected {
+            try! audioSession.overrideOutputAudioPort(.none)
+        } else {
+            try! audioSession.overrideOutputAudioPort(.speaker)
+        }
+        try! audioSession.setActive(true)
+        button.isSelected = !button.isSelected
+    }
+    
+    func actionViewSwitchCamera(_ view: FZActionView, _ button: UIButton) {
+        
+        print("Debug__切换摄像头")
+        self.callSession?.switchCameraPosition(self.actionView.switchCameraButton.isSelected)
+        self.actionView.switchCameraButton.isSelected = !self.actionView.switchCameraButton.isSelected
+        
+    }
+    
+    func actionViewMute(_ view: FZActionView, _ button: UIButton) {
+        print("Debug__静音")
+        button.isSelected = !button.isSelected
+        if button.isSelected {
+            _ = callSession?.pauseVoice()
+        } else {
+            _ = callSession?.resumeVoice()
+        }
+    }
+    
+    func actionViewRejectCall(_ view: FZActionView, _ button: UIButton) {
+        stopTimer()
+        if (self.callSession?.isCaller)! {
+            FZHelper.helper.hangup(EMCallEndReasonNoResponse)
+        } else {
+            FZHelper.helper.hangup(EMCallEndReasonDecline)
+        }
+    }
+    
+    func actionViewAnswerCall(_ view: FZActionView, _ button: UIButton) {
+        FZHelper.helper.answerCall((self.callSession!.callId)!)
+    }
+    
+    func actionViewRecordAction(_ view: FZActionView, _ button: UIButton) {
+        button.isSelected = !button.isSelected
+        if button.isSelected {
+            var recordPath = NSHomeDirectory()
+            recordPath = "\(recordPath)/Library/appdata/chatbuffer"
+            let fm = FileManager.default
+            if !fm.fileExists(atPath: recordPath) {
+                try? fm.createDirectory(atPath: recordPath, withIntermediateDirectories: true, attributes: nil)
+            }
+            var error: EMError?
+            EMVideoRecorderPlugin.sharedInstance().startVideoRecording(toFilePath: recordPath, error: &error)
+            if error == nil {
+                print("Debug__录制视频开始，路径：\(recordPath)")
+                button.setTitle("结束录制", for: .selected)
+            } else {
+                print("Debug__录制视频开始失败，error:\(error!.code)")
+                UIAlertView.showInfo(title: "无法开始录制", info: "\(error?.description)")
+                button.isSelected = false
+            }
+        } else {
+            var aError: EMError?
+            let path = EMVideoRecorderPlugin.sharedInstance().stopVideoRecording(&aError)
+            if aError == nil {
+                print("Debug__录制视频结束，路径：\(path!)")
+                button.setTitle("录制", for: .normal)
+            } else {
+                print("Debug__录制视频结束失败，error:\(aError!.code)")
+                UIAlertView.showInfo(title: "无法结束录制", info: "\(aError?.description)")
+                button.isSelected = true
+            }
+        }
+    }
+    
+    func actionViewFloatingAction(_ view: FZActionView, _ button: UIButton) {
+        guard let window = UIApplication.shared.keyWindow, let callSession = self.callSession else {
+            return
+        }
+        guard window.subviews.contains(self.view) else {
+            return
+        }
+        button.isSelected = !button.isSelected
+        if button.isSelected {
+            self.view.frame = CGRect.init(x: self.view.frame.size.width - 100, y: 44, width: 80, height: self.view.frame.size.height * 80 / self.view.frame.size.width)
+            self.view.bringSubview(toFront: callSession.remoteVideoView)
+            callSession.localVideoView.isHidden = true
+            self.actionView.isHidden = true
+            self.topView.isHidden = true
+        }
+    }
+}
 // 通话的状态
 extension FZCallController {
     
     func changeToConnectedState() {
         self.topView.statusLabel.text = "连接建立完成"
     }
-    
     func changeToAcceptedState() {
         topView.statusLabel.isHidden = true
         topView.timeLabel.isHidden = false
@@ -272,4 +303,5 @@ extension FZCallController {
         actionView.remakeRejectButtonConstraints()
         setupRemoteVideoView()
     }
+
 }

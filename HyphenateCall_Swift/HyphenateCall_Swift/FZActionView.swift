@@ -16,6 +16,7 @@ import UIKit
     @objc optional func actionViewRejectCall(_ view: FZActionView, _ button: UIButton)
     @objc optional func actionViewAnswerCall(_ view: FZActionView, _ button: UIButton)
     @objc optional func actionViewRecordAction(_ view: FZActionView, _ button: UIButton)
+    @objc optional func actionViewFloatingAction(_ view: FZActionView, _ button: UIButton)
 }
 
 class FZActionView: UIView {
@@ -49,6 +50,12 @@ class FZActionView: UIView {
         button.backgroundColor = UIColor.cyan
         return button
     }()
+    
+    lazy var floatingWindowButton: UIButton = {
+        let button = UIButton.createButton(title: "floating", tag: 1008, fontSize: 11, width: 40, target: self, selector: #selector(FZActionView.floatingWindowAction(_:)))
+        button.backgroundColor = UIColor.cyan
+        return button
+    }()
 
     
     lazy var muteButton: UIButton = {
@@ -73,6 +80,7 @@ class FZActionView: UIView {
         self.addSubview(muteButton)
         self.addSubview(rejectButton)
         self.addSubview(answerButton)
+        self.addSubview(floatingWindowButton)
         speakerOutButton.mas_makeConstraints { (make) in
             _ = make?.left.equalTo()(self.mas_left)?.offset()(100)
             _ = make?.top.equalTo()(self.mas_top)?.offset()(20)
@@ -91,6 +99,11 @@ class FZActionView: UIView {
         muteButton.mas_makeConstraints { (make) in
             _ = make?.top.equalTo()(self.mas_top)?.offset()(20)
             _ = make?.right.equalTo()(self.mas_right)?.offset()(-100)
+            _ = make?.width.height().equalTo()(40)
+        }
+        floatingWindowButton.mas_makeConstraints { (make) in
+            _ = make?.left.equalTo()(self.muteButton.mas_right)?.offset()(20)
+            _ = make?.top.equalTo()(self.mas_top)?.offset()(20)
             _ = make?.width.height().equalTo()(40)
         }
         rejectButton.mas_makeConstraints { (make) in
@@ -136,5 +149,9 @@ class FZActionView: UIView {
     
     @objc func recordAction(_ sender: UIButton) {
         delegate?.actionViewRecordAction?(self, sender)
+    }
+    
+    @objc func floatingWindowAction(_ sender: UIButton) {
+        delegate?.actionViewFloatingAction?(self, sender)
     }
 }

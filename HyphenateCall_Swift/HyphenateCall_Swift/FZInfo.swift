@@ -10,9 +10,9 @@ import Foundation
 
 struct FZInfo {
     
-    let loginUsername = "lds_1"
+    let loginUsername = "bax2"
     let loginPassword = "1"
-    let remotrUsername = "lds_2"
-    let appkey = "drunkbread#lif"
+    let remotrUsername = "bax1"
+    let appkey = "easemob-demo#chatdemoui"
     let apnsCertName = "Test1"
 }

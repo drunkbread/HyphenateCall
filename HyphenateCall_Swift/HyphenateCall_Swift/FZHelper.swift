@@ -32,7 +32,11 @@ class FZHelper: NSObject {
                 objc_sync_enter(self.object)
                 self.currentSession = aCallSession
                 self.callController = FZCallController.init(callSession: self.currentSession)
-                self.menuVC .present(self.callController!, animated: true, completion: nil)
+                let window = UIApplication.shared.keyWindow
+                if let callView = self.callController?.view {
+                    window!.addSubview(callView)
+                }
+//                self.menuVC .present(self.callController!, animated: true, completion: nil)
                 self.startCallTimer()
                 objc_sync_exit(self.object)
             } else {
@@ -93,7 +97,9 @@ class FZHelper: NSObject {
         self.currentSession = nil
         // todo 清除callController的数据
         
-        self.callController?.dismiss(animated: false, completion: nil)
+//        self.callController?.dismiss(animated: false, completion: nil)
+        // For floatingWindow
+        self.callController?.view.removeFromSuperview()
         self.callController = nil
         objc_sync_exit(object)
     }
@@ -129,6 +135,7 @@ extension FZHelper: EMCallManagerDelegate , EMClientDelegate, EMCallBuilderDeleg
     func callDidAccept(_ aSession: EMCallSession!) {
         if aSession.callId == self.currentSession?.callId {
             self.callController?.changeToAcceptedState()
+//            stopCallTimer()
         }
     }
     
@@ -149,7 +156,10 @@ extension FZHelper: EMCallManagerDelegate , EMClientDelegate, EMCallBuilderDeleg
         self.callController?.modalPresentationStyle = .overFullScreen
         DispatchQueue.main.async {
             if let controller = self.callController {
-                self.menuVC.present(controller, animated: false, completion: nil)
+//                self.menuVC.present(controller, animated: false, completion: nil)
+                // For floatingwindow
+                let window = UIApplication.shared.keyWindow
+                window!.addSubview(controller.view)
             }
         }
         objc_sync_exit(object)
