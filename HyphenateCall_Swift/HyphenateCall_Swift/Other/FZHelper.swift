@@ -119,11 +119,14 @@ extension FZHelper: EMCallManagerDelegate , EMClientDelegate, EMCallBuilderDeleg
     private func initlizeCallOption() {
         
         let options = EMClient.shared().callManager.getCallOptions!()
-        options?.videoResolution = EMCallVideoResolution640_480
-        options?.isFixedVideoResolution = true
-        options?.isSendPushIfOffline = true
-        options?.offlineMessageText = "您有新的通话请求"
-        EMClient.shared().callManager.setCallOptions!(options)
+        if let options = options {
+            options.videoResolution = EMCallVideoResolution640_480
+            options.isFixedVideoResolution = true
+            options.isSendPushIfOffline = true
+            options.offlineMessageText = "您有新的通话请求"
+            EMClient.shared().callManager.setCallOptions!(options)
+        }
+
     }
     
     func callDidConnect(_ aSession: EMCallSession!) {
